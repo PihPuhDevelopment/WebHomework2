@@ -1,0 +1,143 @@
+body {
+    background-color: #e8e8e8;
+}
+
+nav{
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+}
+
+nav a{
+    color: white;
+}
+
+nav a:hover{
+    color: gainsboro;
+}
+
+.borderless tr, .borderless td{
+    border-style: none;
+}
+
+.nav-account {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.dropdown .nav-link {
+    color: white;
+    text-decoration: none;
+    text-decoration-color: gainsboro;
+}
+
+
+.question {
+    background-color: white;
+    border-style: solid;
+    border-radius: 3px;
+    border-color: gainsboro;
+    border-width: 1px;
+    margin: 20px;
+    padding: 10px;
+}
+
+.question-single {
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    background-color: white;
+    border-style: solid;
+    border-radius: 3px;
+    border-color: gainsboro;
+    border-width: 1px;
+    padding: 10px;
+}
+
+.avatar {
+    margin: 10px;
+    border-radius: 50%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: forestgreen;
+}
+
+.thumbs {
+    text-align: center;
+}
+
+.right-thin-border {
+    border-right-style: solid;
+    border-right-color: darkgrey;
+    border-right-width: 1px;
+}
+
+.center-align {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tag {
+    margin: 5px;
+}
+
+.tag1 {
+    font-size: 25px;
+    color: #3300c1;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.tag2 {
+    font-size: 30px;
+    color: aqua;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.tag3 {
+    font-size: 20px;
+    color: forestgreen;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.tag4 {
+    font-size: 40px;
+    color: brown;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.tag:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.tags-container{
+    background-color: white;
+    border-radius: 3px;
+    padding: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: gainsboro;
+}
+
+.flex-hor-center{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+footer{
+    background-color: #4b4a5b;
+    padding: 10px;
+    margin-top: 30px;
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+}
+

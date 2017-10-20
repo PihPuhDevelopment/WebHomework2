@@ -1,0 +1,241 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="">
+
+    <title>Starter Template for Bootstrap</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/font-awesome-4.7.0/css/font-awesome.css' %}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/custom-checkbox.css' %}">
+</head>
+
+
+<body>
+    <!-- NAV BAR -->
+    <nav class="navbar navbar-inverse" style="background-color: #4b4a5b; color: white;">
+        <a class="navbar-brand">
+            SEGMENTATION SUCCESS
+        </a>
+        <form class="form-inline nav-item mr-auto">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" style="width: 300px;">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-outline-info">
+                        Search
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+
+        <button class="btn btn-outline-success mr-auto" style="width: 100px;">
+            Ask
+        </button>
+        <div class="nav-account dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                <img class="img-fluid avatar" height="auto" width="50px" src="{% static 'img/peka.jpg' %}">
+                Hello, {{ username }}
+            </a>
+
+            <div class="dropdown-menu" style="width: 250px;">
+                <a href="#" class="dropdown-item">My account</a>
+                <a href="#" class="dropdown-item">Settings</a>
+                <a href="#" class="dropdown-item">Log out</a>
+            </div>
+        </div>
+
+    </nav>
+    <!-- NAV BAR END -->
+
+    <p></p>
+
+
+
+    <div class="container">
+        <div class="row">
+
+            <!-- QUESTIONS -->
+            <div class="col-md-8">
+                <h2>{{ questiontitle }}</h2>
+
+                <div class="question-single">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
+
+                                <a href="#">Mr. Butthurt</a>
+                                <img class="img-fluid avatar" height="auto" src="{% static 'img/peka.jpg' %}" style="width: 70px; height: 70px;">
+
+                                <div class="center-block thumbs" style="width: 70px;">
+                                    <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> 25
+                                    <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                <p>{{ questionsnip }}</p>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-6">
+
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            Tags: <a href="#">java</a>,<a href="#">sql</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <br>
+
+                <div class="question">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
+
+                                <a href="#">Ananas</a>
+                                <img class="img-fluid avatar" height="auto" src="{% static 'img/pineapple.jpg' %}" style="width: 70px; height: 70px;">
+
+                                <div class="center-block thumbs" style="width: 70px;">
+                                    <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> 12
+                                    <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                <p>Если вы имеете ввиду, то что в 1С запрос может возвращать иерархический ответ - не одномерную плоскую структуру, а некую двумерную таблицу, то в голом SQL такого нет.
+
+SQL подчиняется правилам стандартной реляционной алгебры, где результатом операций над таблицами (реляциями в терминах реляционной алгебры) всегда являются только таблицы - то есть плоская структура данных.
+
+В JDBC класс ResultSet (вернее интерфейс) описывает именно классическую плоскую таблицу.
+
+В разных диалектах SQL есть вещи похожие на двумерные запросы или OLAP кубы, но в JDBC это все равно не поддерживается.</p>
+                                <div class="checkbox checkbox-primary flex-hor-center">
+                                    <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input">
+                                    <span class="custom-control-indicator"></span>
+                                        
+                                </label>
+                                    Correct
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
+
+                                <a href="#">YoMama</a>
+                                <img class="img-fluid avatar" height="auto" src="{% static 'img/mama.jpg' %}" style="width: 70px; height: 70px;">
+
+                                <div class="center-block thumbs" style="width: 70px;">
+                                    <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a> 464
+                                    <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                <p>Видимо, ты слишком тупой для всего этого дерьма</p>
+                                <div class="checkbox checkbox-primary flex-hor-center">
+                                    <label class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input">
+                                    <span class="custom-control-indicator"></span>
+                                        
+                                </label>
+                                    Correct
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    
+                        <label for="questionInput">Enter your answer here</label>
+                        <textarea class="form-control" id="questionInput" rows="7" placeholder="Enter your question"></textarea><p class="text-danger">Answer is empty</p>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">
+                        Answer
+                    </button>
+                
+            </div>
+
+            <!-- END QUESTIONS -->
+
+            <div class="col-md-4">
+                <!--TAGS-->
+                <h2>Popular tags</h2>
+                <div class="tags-container">
+                    <a href="#" class="tag tag1">Python</a>
+                    <a href="#" class="tag tag2">Django</a>
+                    <a href="#" class="tag tag1">Bootstrap</a>
+                    <a href="#" class="tag tag3">C++</a>
+                    <a href="#" class="tag tag2">Brainfuck</a>
+                    <a href="#" class="tag tag4">Dichara</a>
+                    <a href="#" class="tag tag1">Java</a>
+                    <a href="#" class="tag tag3">Scala</a>
+                    <a href="#" class="tag tag2">Haskell</a>
+                    <a href="#" class="tag tag1">Lisp</a>
+                    <a href="#" class="tag tag2">MySQL</a>
+                </div>
+                <!--END TAGS-->
+
+                <!--BEST MEMS-->
+                <h2> Best members </h2>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="#">Mr. Freeman</a></li>
+                    <li class="list-group-item"><a href="#">YoMama</a></li>
+                    <li class="list-group-item"><a href="#">PihPuh</a></li>
+                    <li class="list-group-item"><a href="#">Ananas</a></li>
+                    <li class="list-group-item"><a href="#">Blender</a></li>
+                    <li class="list-group-item"><a href="#">Pupkins</a></li>
+                </ul>
+                <!--END BEST MEMS-->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        
+    </footer>
+
+    <script src="{% static '/static/js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static '/static/js/bootstrap.js' %}"></script>
+
+    <script>
+        (function() {
+            'use strict'
+
+            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement('style')
+                msViewportStyle.appendChild(
+                    document.createTextNode(
+                        '@-ms-viewport{width:auto!important}'
+                    )
+                )
+                document.head.appendChild(msViewportStyle)
+            }
+
+        }())
+    </script>
+
+</body>
+
+</html>
