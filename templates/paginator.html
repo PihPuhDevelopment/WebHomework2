@@ -1,0 +1,9 @@
+<ul class="pagination">
+    {% for q in pagenum %}
+        {% if q == current %}
+            <li class="page-item active"><a href="?page={{ q }}" class="page-link">{{ q }}</a></li>
+        {% else %}
+            <li class="page-item"><a href="?page={{ q }}" class="page-link">{{ q }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>

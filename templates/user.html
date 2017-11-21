@@ -1,184 +1,56 @@
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% block questions %}
+    <h2>Settings: Mr. Butthurt</h2>
+    <div class="question-single">
+        <form>
+            <table class="table borderless table-sm">
+                <tbody>
+                <tr>
+                    <td>
+                        Login
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" value="mr_butthurt">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Email
+                    </td>
+                    <td>
+                        <input type="email" class="form-control" value="burning@ass.com">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Nickname
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" value="Mr. Butthurt">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Avatar
+                    </td>
+                    <td>
+                        <img src="../questions/static/img/peka.jpg" width="150px" class="img-thumbnail">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Choose another image
+                    </td>
+                    <td>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="">
+                        <input type="file" class="form-control-file" value="Выбрать другое изображение">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-    <title>Starter Template for Bootstrap</title>
-
-    {% load static %}
-
-    <<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}">
-
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom-checkbox.css' %}">
-</head>
-
-
-<body>
-    <!-- NAV BAR -->
-    <nav class="navbar navbar-inverse" style="background-color: #4b4a5b; color: white;">
-        <a class="navbar-brand">
-            SEGMENTATION SUCCESS
-        </a>
-        <form class="form-inline nav-item mr-auto">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" style="width: 300px;">
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-outline-info">
-                        Search
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                </span>
-            </div>
+            <button class="btn btn-outline-success" action="submit">Save changes</button>
         </form>
-
-        <button class="btn btn-outline-success mr-auto" style="width: 100px;">
-            Ask
-        </button>
-        <div class="nav-account dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img class="img-fluid avatar" height="auto" width="50px" src="{% static 'img/peka.jpg' %}">
-                Hello, Mr. Butthurt
-            </a>
-
-            <div class="dropdown-menu" style="width: 250px;">
-                <a href="#" class="dropdown-item">My account</a>
-                <a href="#" class="dropdown-item">Settings</a>
-                <a href="#" class="dropdown-item">Log out</a>
-            </div>
-        </div>
-
-    </nav>
-    <!-- NAV BAR END -->
-
-    <p></p>
-
-
-
-    <div class="container">
-        <div class="row">
-
-            <!-- QUESTIONS -->
-            <div class="col-md-8">
-                <h2>Settings: Mr. Butthurt</h2>
-                <div class="question-single">
-                    <form>
-                        <table class="table borderless table-sm">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        Login
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" value="mr_butthurt">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Email
-                                    </td>
-                                    <td>
-                                        <input type="email" class="form-control" value="burning@ass.com">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Nickname
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" value="Mr. Butthurt">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Avatar
-                                    </td>
-                                    <td>
-                                        <img src="../questions/static/img/peka.jpg" width="150px" class="img-thumbnail">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Choose another image
-                                    </td>
-                                    <td>
-
-                                        <input type="file" class="form-control-file" value="Выбрать другое изображение">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <button class="btn btn-outline-success" action="submit">Save changes</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- END QUESTIONS -->
-
-            <div class="col-md-4">
-                <!--TAGS-->
-                <h2>Popular tags</h2>
-                <div class="tags-container">
-                    <a href="#" class="tag tag1">Python</a>
-                    <a href="#" class="tag tag2">Django</a>
-                    <a href="#" class="tag tag1">Bootstrap</a>
-                    <a href="#" class="tag tag3">C++</a>
-                    <a href="#" class="tag tag2">Brainfuck</a>
-                    <a href="#" class="tag tag4">Dichara</a>
-                    <a href="#" class="tag tag1">Java</a>
-                    <a href="#" class="tag tag3">Scala</a>
-                    <a href="#" class="tag tag2">Haskell</a>
-                    <a href="#" class="tag tag1">Lisp</a>
-                    <a href="#" class="tag tag2">MySQL</a>
-                </div>
-                <!--END TAGS-->
-
-                <!--BEST MEMS-->
-                <h2> Best members </h2>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="#">Mr. Freeman</a></li>
-                    <li class="list-group-item"><a href="#">YoMama</a></li>
-                    <li class="list-group-item"><a href="#">PihPuh</a></li>
-                    <li class="list-group-item"><a href="#">Ananas</a></li>
-                    <li class="list-group-item"><a href="#">Blender</a></li>
-                    <li class="list-group-item"><a href="#">Pupkins</a></li>
-                </ul>
-                <!--END BEST MEMS-->
-            </div>
-        </div>
     </div>
-
-    <footer>
-
-    </footer>
-
-    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
-
-    <script>
-        (function() {
-            'use strict'
-
-            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                var msViewportStyle = document.createElement('style')
-                msViewportStyle.appendChild(
-                    document.createTextNode(
-                        '@-ms-viewport{width:auto!important}'
-                    )
-                )
-                document.head.appendChild(msViewportStyle)
-            }
-
-        }())
-    </script>
-
-</body>
-
-</html>
+{% endblock %}

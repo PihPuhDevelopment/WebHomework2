@@ -1,3 +1,4 @@
+{% include 'paginator.html' %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,39 +12,43 @@
     <title>Starter Template for Bootstrap</title>
     {% load static %}
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="../questions/static/css/bootstrap.css">
-    <link rel="stylesheet" href="../questions/static/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="../questions/static/css/style.css">
-    <link rel="stylesheet" href="../questions/static/css/custom-checkbox.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom-checkbox.css' %}">
 </head>
 
 
 <body>
-    <!-- NAV BAR -->
-    <nav class="navbar navbar-inverse" style="background-color: #4b4a5b; color: white;">
-        <a class="navbar-brand">
-            SEGMENTATION SUCCESS
-        </a>
-        <form class="form-inline nav-item mr-auto">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" style="width: 300px;">
-                <span class="input-group-btn">
+<!-- NAV BAR -->
+<nav class="navbar navbar-inverse" style="background-color: #4b4a5b; color: white;">
+    <a class="navbar-brand">
+        SEGMENTATION SUCCESS
+    </a>
+
+
+    <form class="form-inline nav-item mr-auto">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" style="width: 300px;">
+            <span class="input-group-btn">
                     <button type="submit" class="btn btn-outline-info">
                         Search
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </span>
-            </div>
-        </form>
+        </div>
+    </form>
+
+    {% block user %}
 
         <button class="btn btn-outline-success mr-auto" style="width: 100px;">
             Ask
         </button>
         <div class="nav-account dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img class="img-fluid avatar" height="auto" width="50px" src="../questions/static/img/peka.jpg">
+                <img class="img-fluid avatar" height="auto" width="50px" src="{% static 'img/peka.jpg' %}">
                 Hello, Mr. Butthurt
             </a>
 
@@ -54,75 +59,95 @@
             </div>
         </div>
 
-    </nav>
-    <!-- NAV BAR END -->
+    {% endblock %}
 
-    <p></p>
+</nav>
+<!-- NAV BAR END -->
+
+<p></p>
 
 
+<div class="container">
+    <div class="row">
 
-    <div class="container">
-        <div class="row">
+        <!-- QUESTIONS -->
+        <div class="col-md-8">
 
-            <!-- QUESTIONS -->
-            <div class="col-md-8">
 
+            {% block questions %}
+                {% block content %}
+                {% endblock %}
+                {% block pagination %}
+                    {% include 'paginator.html' %}
+                {% endblock %}
+
+            {% endblock %}
+
+            {% block pagination2 %}
+                {% include 'paginator.html' %}
+            {% endblock %}
+        </div>
+
+
+        <!-- END QUESTIONS -->
+
+        <div class="col-md-4">
+            <!--TAGS-->
+            <h2>Popular tags</h2>
+            <div class="tags-container">
+                <a href="#" class="tag tag1">Python</a>
+                <a href="#" class="tag tag2">Django</a>
+                <a href="#" class="tag tag1">Bootstrap</a>
+                <a href="#" class="tag tag3">C++</a>
+                <a href="#" class="tag tag2">Brainfuck</a>
+                <a href="#" class="tag tag4">Dichara</a>
+                <a href="#" class="tag tag1">Java</a>
+                <a href="#" class="tag tag3">Scala</a>
+                <a href="#" class="tag tag2">Haskell</a>
+                <a href="#" class="tag tag1">Lisp</a>
+                <a href="#" class="tag tag2">MySQL</a>
             </div>
+            <!--END TAGS-->
 
-            <!-- END QUESTIONS -->
-
-            <div class="col-md-4">
-                <!--TAGS-->
-                <h2>Popular tags</h2>
-                <div class="tags-container">
-                    <a href="#" class="tag tag1">Python</a>
-                    <a href="#" class="tag tag2">Django</a>
-                    <a href="#" class="tag tag1">Bootstrap</a>
-                    <a href="#" class="tag tag3">C++</a>
-                    <a href="#" class="tag tag2">Brainfuck</a>
-                    <a href="#" class="tag tag4">Dichara</a>
-                    <a href="#" class="tag tag1">Java</a>
-                    <a href="#" class="tag tag3">Scala</a>
-                    <a href="#" class="tag tag2">Haskell</a>
-                    <a href="#" class="tag tag1">Lisp</a>
-                    <a href="#" class="tag tag2">MySQL</a>
-                </div>
-                <!--END TAGS-->
-
-                <!--BEST MEMS-->
-                <h2> Best members </h2>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="#">Mr. Freeman</a></li>
-                    <li class="list-group-item"><a href="#">YoMama</a></li>
-                    <li class="list-group-item"><a href="#">PihPuh</a></li>
-                    <li class="list-group-item"><a href="#">Ananas</a></li>
-                    <li class="list-group-item"><a href="#">Blender</a></li>
-                    <li class="list-group-item"><a href="#">Pupkins</a></li>
-                </ul>
-                <!--END BEST MEMS-->
-            </div>
+            <!--BEST MEMS-->
+            <h2> Best members </h2>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#">Mr. Freeman</a></li>
+                <li class="list-group-item"><a href="#">YoMama</a></li>
+                <li class="list-group-item"><a href="#">PihPuh</a></li>
+                <li class="list-group-item"><a href="#">Ananas</a></li>
+                <li class="list-group-item"><a href="#">Blender</a></li>
+                <li class="list-group-item"><a href="#">Pupkins</a></li>
+            </ul>
+            <!--END BEST MEMS-->
         </div>
     </div>
+</div>
 
-    <script src="../questions/static/js/jquery-3.2.1.min.js"></script>
-    <script src="../questions/static/js/bootstrap.js"></script>
+<footer>
 
-    <script>
-        (function() {
-            'use strict'
+</footer>
 
-            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                var msViewportStyle = document.createElement('style')
-                msViewportStyle.appendChild(
-                    document.createTextNode(
-                        '@-ms-viewport{width:auto!important}'
-                    )
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+<script>
+    (function () {
+        'use strict'
+
+        if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+            var msViewportStyle = document.createElement('style')
+            msViewportStyle.appendChild(
+                document.createTextNode(
+                    '@-ms-viewport{width:auto!important}'
                 )
-                document.head.appendChild(msViewportStyle)
-            }
+            )
+            document.head.appendChild(msViewportStyle)
+        }
 
-        }())
-    </script>
+    }())
+</script>
+
 
 </body>
 

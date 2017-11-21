@@ -25,7 +25,7 @@ SECRET_KEY = '3e%_t_xr@gd-r^1i0@@8e(r!0l9+(5t80r*&+rnn^*m@$e1upv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'ask.me', u'127.0.0.1']
+ALLOWED_HOSTS = [u'127.0.0.1']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'questions',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,11 @@ WSGI_APPLICATION = 'askleo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'db': 'askleo_db',
+            'read_default_file': '~/.my.cnf'
+        }
     }
 }
 
@@ -117,4 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")

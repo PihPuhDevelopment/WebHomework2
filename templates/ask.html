@@ -1,159 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="">
+{% load static %}
 
-    <title>Starter Template for Bootstrap</title>
-
-    {% load static %}
-
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}">
-
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom-checkbox.css' %}">
-</head>
-
-
-<body>
-    <!-- NAV BAR -->
-    <nav class="navbar navbar-inverse" style="background-color: #4b4a5b; color: white;">
-        <a class="navbar-brand">
-            SEGMENTATION SUCCESS
-        </a>
-        <form class="form-inline nav-item mr-auto">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" style="width: 300px;">
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-outline-info">
-                        Search
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                </span>
+{% block questions %}
+    <h2>New question</h2>
+    <p class="text-danger">Please, enter the title</p>
+    <div class="question-single">
+        <form>
+            <div class="form-group">
+                <label for="titleInput">Title</label>
+                <input type="text" class="form-control" if="titleInput" placeholder="Enter question title">
+                <small class="form-text text-muted">Clear and short statement of your problem</small>
             </div>
+
+            <div class="form-group">
+                <label for="questionInput">Text</label>
+                <textarea class="form-control" id="questionInput" rows="7" placeholder="Enter your question"></textarea>
+                <small class="form-text text-muted">Detailed explanation of your problem</small>
+            </div>
+
+            <div class="form-group">
+                <label for="titleInput">Tags</label>
+                <input type="text" class="form-control" if="titleInput" placeholder="Enter question title">
+                <small class="form-text text-muted">List of tags, separated by commas</small>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Ask
+            </button>
         </form>
-
-        <button class="btn btn-outline-success mr-auto" style="width: 100px;">
-            Ask
-        </button>
-        <div class="nav-account dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img class="img-fluid avatar" height="auto" width="50px" src="{% static 'img/peka.jpg' %}">
-                Hello, Mr. Butthurt
-            </a>
-
-            <div class="dropdown-menu" style="width: 250px;">
-                <a href="#" class="dropdown-item">My account</a>
-                <a href="#" class="dropdown-item">Settings</a>
-                <a href="#" class="dropdown-item">Log out</a>
-            </div>
-        </div>
-
-    </nav>
-    <!-- NAV BAR END -->
-
-    <p></p>
-
-
-
-    <div class="container">
-        <div class="row">
-
-            <!-- NEW QUESTION -->
-            <div class="col-md-8">
-                <h2>New question</h2>
-                <p class="text-danger">Please, enter the title</p>
-                <div class="question-single">
-                    <form>
-                        <div class="form-group">
-                            <label for="titleInput">Title</label>
-                            <input type="text" class="form-control" if="titleInput" placeholder="Enter question title">
-                            <small class="form-text text-muted">Clear and short statement of your problem</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="questionInput">Text</label>
-                            <textarea class="form-control" id="questionInput" rows="7" placeholder="Enter your question"></textarea>
-                            <small class="form-text text-muted">Detailed explanation of your problem</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="titleInput">Tags</label>
-                            <input type="text" class="form-control" if="titleInput" placeholder="Enter question title">
-                            <small class="form-text text-muted">List of tags, separated by commas</small>
-                        </div>
-
-                        <button type="submit" class="btn btn-success">
-                        Ask
-                    </button>
-                    </form>
-                </div>
-            </div>
-            <!-- NEW QUESTION END -->
-
-            <div class="col-md-4">
-                <!--TAGS-->
-                <h2>Popular tags</h2>
-                <div class="tags-container">
-                    <a href="#" class="tag tag1">Python</a>
-                    <a href="#" class="tag tag2">Django</a>
-                    <a href="#" class="tag tag1">Bootstrap</a>
-                    <a href="#" class="tag tag3">C++</a>
-                    <a href="#" class="tag tag2">Brainfuck</a>
-                    <a href="#" class="tag tag4">Dichara</a>
-                    <a href="#" class="tag tag1">Java</a>
-                    <a href="#" class="tag tag3">Scala</a>
-                    <a href="#" class="tag tag2">Haskell</a>
-                    <a href="#" class="tag tag1">Lisp</a>
-                    <a href="#" class="tag tag2">MySQL</a>
-                </div>
-                <!--END TAGS-->
-
-                <!--BEST MEMS-->
-                <h2> Best members </h2>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="#">Mr. Freeman</a></li>
-                    <li class="list-group-item"><a href="#">YoMama</a></li>
-                    <li class="list-group-item"><a href="#">PihPuh</a></li>
-                    <li class="list-group-item"><a href="#">Ananas</a></li>
-                    <li class="list-group-item"><a href="#">Blender</a></li>
-                    <li class="list-group-item"><a href="#">Pupkins</a></li>
-                </ul>
-                <!--END BEST MEMS-->
-            </div>
-        </div>
     </div>
-
-    <footer>
-
-    </footer>
-
-    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
-
-    <script>
-        (function() {
-            'use strict'
-
-            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                var msViewportStyle = document.createElement('style')
-                msViewportStyle.appendChild(
-                    document.createTextNode(
-                        '@-ms-viewport{width:auto!important}'
-                    )
-                )
-                document.head.appendChild(msViewportStyle)
-            }
-
-        }())
-    </script>
-
-</body>
-
-</html>
+{% endblock %}
