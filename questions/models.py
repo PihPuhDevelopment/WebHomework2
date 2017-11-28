@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from questions.exceptions import CorrectAlreadyExists
-from model_managers import QuestionManager
+from model_managers import QuestionManager, AnswerManager
 
 # Create your models here.
 
@@ -34,6 +34,8 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, null=False, on_delete=models.CASCADE, verbose_name="question reference")
     correct = models.BooleanField(default=False, verbose_name="shows if the answer is marked as correct")
     date = models.DateTimeField(auto_now=True, verbose_name="date when answer was created")
+
+    objects = AnswerManager()
 
     def save(self, force_insert=False, force_update=False, **kwargs):
         if self.correct:
