@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, Http404
 from askleo import settings
 from django.core.paginator import Paginator
 from models import Profile, Tag, Question, Answer, QuestionLike, AnswerLike
@@ -34,40 +34,38 @@ def index(request):
 
     context = {'qs': qs_on_page, 'pagenum': range(1, pages.num_pages), 'current': pagenum}
 
-    response = render(request, 'index.html', context)
-    return response
+    return render(request, 'index.html', context)
 
 
-def hot_questions(request, hot_page):
-    hots = []
-    for q in qs:
-        if q['likes'] > 200:
-            hots.append(q)
+def hot_questions(request):
+    hots = Question.objects.hot_questions()
 
-    hots_on_page = paginate(hots, request)
+    hots_on_page, pages, pagenum = paginate(hots, request)
 
-    context = {'qs': hots_on_page}
-    response = render(request, 'hots.html', context)
-    return response
+    context = {'qs': hots_on_page, 'pagenum': range(1, pages.num_pages), 'current': pagenum}
+    return render(request, 'hots.html', context)
 
 
 def questions_by_tag(request, tag):
-    tagged = []
-    for q in qs:
-        if tag in q['tags']:
-            tagged.append(q)
+    tagged = Question.objects.filter_with_rating(tags__name=tag)
 
-    tagged_on_page = paginate(tagged, request)
+    tagged_on_page, pages, pagenum = paginate(tagged, request)
 
-    context = {'qs': tagged_on_page, 'tag': tag}
-    response = render(request, 'tag.html', context)
-    return response
+    context = {'qs': tagged_on_page, 'tag': tag, 'pagenum': range(1, pages.num_pages), 'current': pagenum}
+
+    return render(request, 'tag.html', context)
 
 def single_question(request, question_number):
-    qnum = int(question_number)
-    context = {'question': qs[qnum-1]}
-    response = render(request, 'question.html', context)
-    return response
+    try:
+        question = Question.objects.get_with_rating(id=int(question_number))
+    except Question.DoesNotExist:
+        return Http404()
+
+    answers = Answer.objects.filter_with_rating(question_id=question.id)
+
+    context = {'question': question, 'answers': answers}
+
+    return render(request, 'question.html', context)
 
 
 def signin(request):
