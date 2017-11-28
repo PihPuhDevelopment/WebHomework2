@@ -17,3 +17,9 @@ class QuestionManager(models.Manager):
                     rating -= 1
             question.rating = rating
         return questions
+
+    def hot_questions(self):
+        questions = self.with_rating()
+        questions.sort(key=lambda question: question.rating, reverse=True)
+        return questions[:10]
+
