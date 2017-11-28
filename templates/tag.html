@@ -1,59 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block questions %}
-        <h2>Tag: {{ tag }}</h2>
-
+    <h2>Tag: {{ tag }}</h2>
+    {% block content %}
         <div class="center-align">
 
             {% for q in qs %}
-            <div class="question">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
-                            <a href="#">{{ q.username }}</a>
-                            <img class="img-fluid avatar" src="{% static 'img/mama.jpg' %}" style="width: 100px; height: 100px;">
+                <div class="question">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
+                                <a href="#">{{ q.username }}</a>
+                                <img class="img-fluid avatar" src="{% static 'img/mama.jpg' %}"
+                                     style="width: 100px; height: 100px;">
 
-                            <div class="center-block thumbs" style="width: 70px;">
-                                <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                {{ q.likes }}
-                                <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                                <div class="center-block thumbs" style="width: 70px;">
+                                    <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
+                                    {{ q.rating }}
+                                    <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-9 col-sm-9 col-xs-9">
-                            <a href="/question/{{ q.id }}">
-                                <h3>{{ q.title }}</h3>
-                            </a>
-                            <p>{{ q.snippet }}</p>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a href="#">Answer(3)</a>
-                                    </div>
+                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                <a href="{% url 'question' q.id %}">
+                                    <h3>{{ q.title }}</h3>
+                                </a>
+                                <p>{{ q.snippet }}</p>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a href="#">Answer(3)</a>
+                                        </div>
 
-                                    <div class="col-md-6">
-                                        Tags:
-                                        {% for tag in q.tags %}
-                                            <a href="{% url 'tag' tag %}">{{ tag }} </a>
-                                        {% endfor %}
+                                        <div class="col-md-6">
+                                            Tags:
+                                            {% for tag in q.tags.all %}
+                                                <a href="{% url 'tag' tag.name %}">{{ tag.name }} </a>
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
 
-{% endblock %}
+    {% endblock %}
 
-{% block pagination %}
-    <ul class="pagination">
-        <li class="page-item"><a href="#" class="page-link">1</a></li>
-        <li class="page-item"><a href="#" class="page-link">2</a></li>
-        <li class="page-item"><a href="#" class="page-link">3</a></li>
-        <li class="page-item"><a href="#" class="page-link">4</a></li>
-        <li class="page-item"><a href="#" class="page-link">5</a></li>
-    </ul>
 {% endblock %}

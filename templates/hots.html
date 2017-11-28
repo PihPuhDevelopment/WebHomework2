@@ -3,7 +3,7 @@
 
 {% block questions %}
     <h2>Hot questions</h2>
-
+{% block content %}
     <div class="center-align">
 
         {% for q in qs %}
@@ -11,12 +11,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
-                            <a href="#">{{ q.username }}</a>
+                            <a href="#">{{ q.user.username }}</a>
                             <img class="img-fluid avatar" src="{% static 'img/mama.jpg' %}" style="width: 100px; height: 100px;">
 
                             <div class="center-block thumbs" style="width: 70px;">
                                 <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                    {{ q.likes }}
+                                    {{ q.rating }}
                                 <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
                             </div>
                         </div>
@@ -34,8 +34,8 @@
 
                                     <div class="col-md-6">
                                         Tags:
-                                        {% for tag in q.tags %}
-                                            <a href="/tag/{{ tag }}">{{ tag }} </a>
+                                        {% for tag in q.tags.all %}
+                                            <a href="{% url 'tag' tag.name %}">{{ tag.name }} </a>
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -46,14 +46,5 @@
             </div>
         {% endfor %}
     </div>
-{% endblock %}
-
-{% block pagination %}
-    <ul class="pagination">
-        <li class="page-item"><a href="#" class="page-link">1</a></li>
-        <li class="page-item"><a href="#" class="page-link">2</a></li>
-        <li class="page-item"><a href="#" class="page-link">3</a></li>
-        <li class="page-item"><a href="#" class="page-link">4</a></li>
-        <li class="page-item"><a href="#" class="page-link">5</a></li>
-    </ul>
+    {% endblock %}
 {% endblock %}

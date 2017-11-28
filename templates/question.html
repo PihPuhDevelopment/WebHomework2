@@ -10,19 +10,19 @@
             <div class="row">
                 <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
 
-                    <a href="#">{{ question.user_name }}</a>
+                    <a href="#">{{ question.user.username }}</a>
                     <img class="img-fluid avatar" height="auto" src="{% static 'img/peka.jpg' %}"
                          style="width: 70px; height: 70px;">
 
                     <div class="center-block thumbs" style="width: 70px;">
                         <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                        {{ question.likes }}
+                        {{ question.rating }}
                         <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
                     </div>
                 </div>
 
                 <div class="col-md-9 col-sm-9 col-xs-9">
-                    <p>{{ question.content }}</p>
+                    <p>{{ question.text }}</p>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6">
@@ -31,8 +31,8 @@
 
                             <div class="col-md-6">
                                 Tags:
-                                {% for tag in question.tags %}
-                                    <a href="{% url 'tag' tag %}">{{ tag }} </a>
+                                {% for tag in question.tags.all %}
+                                    <a href="{% url 'tag' tag.name %}">{{ tag.name }} </a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -44,29 +44,32 @@
 
     <br>
 
-    {% for ans in question.answers %}
+    {% for ans in answers %}
 
         <div class="question">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
 
-                        <a href="#">{{ ans.user_name }}</a>
+                        <a href="#">{{ ans.user.username }}</a>
                         <img class="img-fluid avatar" height="auto" src="{% static 'img/pineapple.jpg' %}"
                              style="width: 70px; height: 70px;">
 
                         <div class="center-block thumbs" style="width: 70px;">
                             <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                {{ ans.likes }}
+                                {{ ans.rating }}
                             <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
                         </div>
                     </div>
 
                     <div class="col-md-9 col-sm-9 col-xs-9">
-                        <p>{{ ans.answer }}</p>
+                        <p>{{ ans.text }}</p>
                         <div class="checkbox checkbox-primary flex-hor-center">
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input">
+                                <input type="checkbox" class="custom-control-input" disabled
+                                        {% if ans.correct %}
+                                            checked
+                                        {% endif %}>
                                 <span class="custom-control-indicator"></span>
 
                             </label>
