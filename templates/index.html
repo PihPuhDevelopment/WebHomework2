@@ -14,12 +14,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
-                            <a href="#">{{ q.username }}</a>
+                            <a href="#">{{ q.user.username }}</a>
                             <img class="img-fluid avatar" src="{% static 'img/mama.jpg' %}" style="width: 100px; height: 100px;">
 
                             <div class="center-block thumbs" style="width: 70px;">
                                 <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                {{ q.likes }}
+                                {{ q.rating }}
                                 <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
                             </div>
                         </div>
@@ -37,8 +37,8 @@
 
                                     <div class="col-md-6">
                                         Tags:
-                                        {% for tag in q.tags %}
-                                            <a href="{% url 'tag' tag %}">{{ tag }} </a>
+                                        {% for tag in q.tags.all %}
+                                            <a href="{% url 'tag' tag.name %}">{{ tag.name }} </a>
                                         {% endfor %}
                                     </div>
                                 </div>
