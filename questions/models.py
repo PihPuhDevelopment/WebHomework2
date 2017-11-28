@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from questions.exceptions import CorrectAlreadyExists
+from model_managers import QuestionManager
 
 # Create your models here.
 
@@ -24,7 +25,7 @@ class Question(models.Model):
     user = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL, verbose_name="user reference")
     date = models.DateTimeField(auto_now=True, verbose_name="date when question was created")
 
-
+    objects = QuestionManager()
 
 
 class Answer(models.Model):
@@ -64,4 +65,6 @@ class QuestionLike(models.Model):
 
     class Meta:
         unique_together = ("questionLiked", "user")
+
+
 
