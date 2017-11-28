@@ -5,14 +5,15 @@ from django.shortcuts import render
 from django.http.response import HttpResponse
 from askleo import settings
 from django.core.paginator import Paginator
+from models import Profile, Tag, Question, Answer, QuestionLike, AnswerLike
 import json
 
 # Create your views here.
 ITEMS_PER_PAGE = 7
 
 
-with open('/home/leonid/ParkMail/Web/askleo/askleo/static/data.json'.encode('utf-8'), 'r'.encode('utf-8')) as infile:
-    qs = json.load(infile)
+#with open('/home/leonid/ParkMail/Web/askleo/askleo/static/data.json'.encode('utf-8'), 'r'.encode('utf-8')) as infile:
+    #qs = json.load(infile)
 
 
 def paginate(objects, request):
@@ -27,7 +28,9 @@ def paginate(objects, request):
 
 
 def index(request):
-    qs_on_page, pages, pagenum = paginate(qs, request)
+    all_questions = Question.objects.with_rating();
+
+    qs_on_page, pages, pagenum = paginate(all_questions, request)
 
     context = {'qs': qs_on_page, 'pagenum': range(1, pages.num_pages), 'current': pagenum}
 
