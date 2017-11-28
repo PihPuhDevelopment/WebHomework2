@@ -25,7 +25,7 @@ SECRET_KEY = '3e%_t_xr@gd-r^1i0@@8e(r!0l9+(5t80r*&+rnn^*m@$e1upv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'127.0.0.1']
+ALLOWED_HOSTS = [u'127.0.0.1', u'ask.me']
 
 
 # Application definition
@@ -123,5 +123,5 @@ USE_TZ = True
 
 STATIC_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-MEDIA_URL = '/'
+MEDIA_URL = '/uploads'
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
