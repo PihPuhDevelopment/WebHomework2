@@ -2,12 +2,12 @@
 from django import forms
 from django.core.validators import RegexValidator
 from questions.models import Profile
-from questions.models import Answer
+from questions.models import Answer, Question, Tag
 
 _alphanumeric_validator = RegexValidator(r'^[0-9a-zA-Z_]*$',
                                          "Only alphabetic symbols, numbers and underscores allowed")
 
-
+# ENABLED FORMS
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=150, widget=forms.TextInput(
         attrs={'class': 'form-control',
@@ -69,6 +69,11 @@ class LoginForm(forms.Form):
 
 
 class AskForm(forms.Form):
+    
+    def __init__(self, post=None,  user=None):
+        super(AskForm, self).__init__(data=post)
+        self.user = user
+
     title = forms.CharField(max_length=100, label="Title", help_text="Clear and short statement of your problem",
                             widget=forms.TextInput(
                                 attrs={'class': 'form-control',
@@ -89,7 +94,64 @@ class AskForm(forms.Form):
                                }
                            ))
 
+    def clean(self):
+        cleaned_data = super(AskForm, self).clean()
+        tag_list = cleaned_data["tags"].split(',')
+        cleaned_data["tags"] = []
 
+        for tag in tag_list:
+            print(tag)
+            if tag != u'':
+                tag.strip()
+                cleaned_data["tags"].append(tag)
+
+        if not cleaned_data["tags"]:
+            raise forms.ValidationError("Specify at least one valid tag")
+        return cleaned_data
+
+    def save(self):
+        if self.user is not None:
+            question = Question(user=self.user,
+                                title=self.cleaned_data["title"],
+                                text=self.cleaned_data["question"],
+                                snippet=self.cleaned_data["question"][:100])
+            question.save()
+            #clean() guarantees that cleaned_data has at least one tag
+            for tag in self.cleaned_data["tags"]:
+                search_tag = Tag.objects.filter(name=tag).last()
+                if search_tag:
+                    question.tags.add(search_tag)
+                else:
+                    new_tag = Tag(name=tag)
+                    new_tag.save()
+                    question.tags.add(new_tag)
+
+            question.save()
+            return question
+
+class AnswerForm(forms.Form):
+
+    def __init__(self, post=None, user=None, question=None):
+        super(AnswerForm, self).__init__(data=post)
+        self.user = user
+        self.question = question
+
+    answer = forms.CharField(label="Answer",
+                               widget=forms.Textarea(
+                                   attrs={
+                                       'class': 'form-control',
+                                       'placeholder': 'Enter your answer here...'
+                                   }
+                               ))
+
+    def save(self):
+        new_answer = Answer(user=self.user,
+                            question=self.question,
+                            text=self.cleaned_data["answer"])
+        new_answer.save()
+
+
+#TUTORIAL FORMS
 class AuthorForm(forms.Form):
     name = forms.CharField(max_length=255)
     birthday = forms.DateField(
@@ -106,13 +168,6 @@ class AuthorForm(forms.Form):
 
     def save(self):
         pass
-
-
-class AnswerForm(forms.ModelForm):
-    class Meta:
-        model = Answer
-        exclude = []
-
 
 class ProfileForm(forms.Form):
     avatar = forms.ImageField(

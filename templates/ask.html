@@ -7,6 +7,7 @@
     <p class="text-danger">Please, enter the title</p>
     <div class="question-single">
         <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <!--<div class="form-group">
                 <label for="titleInput">Title</label>
                 <input type="text" class="form-control" if="titleInput" placeholder="Enter question title">
@@ -25,7 +26,7 @@
                 <small class="form-text text-muted">List of tags, separated by commas</small>
             </div>-->
 
-            {{ form.as_table }}
+            {{ form.as_p }}
 
             <button type="submit" class="btn btn-success">
                 Ask

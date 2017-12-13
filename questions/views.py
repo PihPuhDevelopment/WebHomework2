@@ -1,21 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-#django imports
-from django.shortcuts import render, redirect
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http.response import Http404, JsonResponse
 from django.core.paginator import Paginator
-#my imports
-from questions.forms import RegisterForm, LoginForm, AuthorForm, AnswerForm, ProfileForm
-from models import Profile, Tag, Question, Answer, QuestionLike, AnswerLike, User
+from django.http.response import Http404, JsonResponse
+# django imports
+from django.shortcuts import render, redirect
+
+from models import Profile, Question, Answer
+# my imports
+from questions.forms import RegisterForm, LoginForm, AuthorForm, AnswerForm, ProfileForm, AskForm
 
 ITEMS_PER_PAGE = 7
 PAGES_PER_PAGE = 10
 
+
 def add_user(request, context):
-    profile = Profile.objects.filter(user_ptr_id=request.user.id).last()
-    context['userinfo'] = profile
+    _profile = Profile.objects.filter(user_ptr_id=request.user.id).last()
+    context['userinfo'] = _profile
     return context
 
 
@@ -63,7 +66,10 @@ def hot_questions(request):
 
     hots_on_page, pages, pagenum = paginate(hots, request)
 
-    context = {'qs': hots_on_page, 'pagenum': range(1, pages.num_pages), 'current': pagenum}
+    context = {'qs': hots_on_page,
+               'pagenum': range(1, pages.num_pages),
+               'current': pagenum}
+    context = add_user(request, context)
     return render(request, 'hots.html', context)
 
 
@@ -73,11 +79,12 @@ def questions_by_tag(request, tag):
     tagged_on_page, pages, pagenum = paginate(tagged, request)
 
     context = {'qs': tagged_on_page, 'tag': tag, 'pagenum': range(1, pages.num_pages), 'current': pagenum}
-
+    context = add_user(request, context)
     return render(request, 'tag.html', context)
 
 
 def single_question(request, question_number):
+
     try:
         question = Question.objects.get_with_rating(id=int(question_number))
     except Question.DoesNotExist:
@@ -86,13 +93,26 @@ def single_question(request, question_number):
     answers = Answer.objects.filter_with_rating(question_id=question.id)
 
     context = {'question': question, 'answers': answers}
+    context = add_user(request, context)
+
+    if request.method == 'POST':
+        form = AnswerForm(request.POST, context["userinfo"], question)
+        if form.is_valid():
+            form.save()
+            return redirect('question', question_number)
+    else:
+        form = AnswerForm()
+
+    context['form'] = form
 
     return render(request, 'question.html', context)
 
 
 def signin(request):
     if request.user.is_authenticated:
-        return render(request, 'already_signed_in.html', {})
+        context = {}
+        context = add_user(request, context)
+        return render(request, 'already_signed_in.html', context)
     if request.method == 'GET':
         form = LoginForm()
     else:
@@ -112,19 +132,32 @@ def signin(request):
 
 def signup(request):
     if request.user.is_authenticated:
-        return render(request, 'already_signed_in.html', {})
+        context = {}
+        context = add_user(request, context)
+        return render(request, 'already_signed_in.html', context)
     if request.method == 'GET':
         register_form = RegisterForm()
     else:
         register_form = RegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
             register_form.save()
-            return redirect('/')
+            return redirect('index')
     return render(request, 'register.html', {'form': register_form})
 
 
+@login_required
 def ask(request):
-    return render(request, 'ask.html', {})
+    if request.method == 'POST':
+        form = AskForm(request.POST, Profile.objects.get(id=request.user.id))
+        if form.is_valid():
+            new_question = form.save()
+            return redirect('question', new_question.id)
+    else:
+        form = AskForm()
+
+    context = {'form': form}
+    context = add_user(request, context)
+    return render(request, 'ask.html', context)
 
 
 def create_author(request):
@@ -135,7 +168,10 @@ def create_author(request):
     else:
         form = AuthorForm()
 
-    return render(request, "form.html", {'form': form})
+    context = {'form': form}
+    context = add_user(request, context)
+    return render(request, "form.html", context)
+
 
 def create_answer(request):
     if request.method == 'POST':
@@ -145,39 +181,46 @@ def create_answer(request):
     else:
         form = AnswerForm()
 
-    return render(request, "form.html", {'form': form})
+    context = {'form': form}
+    context = add_user(request, context)
+    return render(request, "form.html", context)
 
-@login_required
+
+@login_required()
 def log_out(request):
     logout(request)
     return redirect("/")
 
-@login_required
+
+@login_required()
 def profile(request):
     user = request.user
-    profile = Profile.objects.filter(user_ptr_id=user.id).last()
-    print(profile)
+    _profile = Profile.objects.filter(user_ptr_id=user.id).last()
+    print(_profile)
     if request.POST:
         form = ProfileForm(request.POST, request.FILES)
         print("is post")
         if form.is_valid():
             print("valid")
-            profile.avatar = form.cleaned_data["avatar"]
-            profile.save()
+            _profile.avatar = form.cleaned_data["avatar"]
+            _profile.save()
 
-    return render(request, 'profile.html', {})
+    context = {}
+    context = add_user(request, context)
+    return render(request, 'profile.html', context)
 
-@login_required
+
+@login_required()
 def vote(request):
     try:
         qid = int(request.POST.get('qid'))
     except:
         return JsonResponse(dict(error='bad question id'))
-    vote = request.POST.get('vote')
+    _vote = request.POST.get('vote')
     question = Question.objects.get_with_rating(id=qid)
     rating = question.rating
-    if vote=="inc":
+    if _vote == "inc":
         rating += 1
     else:
         rating -= 1
-    return JsonResponse(dict(ok=1, vote=vote, rating=rating))
+    return JsonResponse(dict(ok=1, vote=_vote, rating=rating))

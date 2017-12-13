@@ -13,7 +13,7 @@ class Profile(User):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=40, verbose_name="tag's title")
+    name = models.CharField(max_length=40, verbose_name="tag's title", unique=True)
 
 
 class Question(models.Model):

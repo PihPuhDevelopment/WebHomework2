@@ -83,15 +83,18 @@
     {% endfor %}
 
 
-
-    <div class="form-group">
-
+<form method="POST" enctype="multipart/form-data">
+    <!--<div class="form-group">
         <label for="questionInput">Enter your answer here</label>
         <textarea class="form-control" id="questionInput" rows="7" placeholder="Enter your question"></textarea>
         <p class="text-danger">Answer is empty</p>
-    </div>
+    </div>-->
+
+    {% csrf_token %}
+    {{ form.as_p }}
 
     <button type="submit" class="btn btn-success">
         Answer
     </button>
+</form>
 {% endblock %}
