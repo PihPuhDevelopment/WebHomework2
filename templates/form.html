@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DJango form babe</title>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        <table>
+            {{ form.as_table }}
+            {% csrf_token %}
+        </table>
+        <input type="submit">
+    </form>
+</body>
+</html>

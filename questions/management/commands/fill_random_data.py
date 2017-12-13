@@ -23,20 +23,26 @@ class Command(BaseCommand):
         parser.add_argument("--n_tags", action="store", nargs=1, type=int, default=20)
 
     def handle(self, *args, **options):
-        for i in range(0, options["n_users"]):
+
+        print("Adding " + str(options["n_users"][0]) + " users")
+        for i in range(0, options["n_users"][0]):
             #generate some random users
             fake_profile = fake.simple_profile()
             profile = Profile(username=fake_profile["name"], email=fake_profile["mail"], login=fake_profile["username"], password=fake.password())
             profile.save()
+            print("Saved user with username " + profile.username)
 
+        print("Adding " + str(options["n_tags"][0]) + " tags")
         tags_indexes = list(range(0, len(tags)))
         random.shuffle(tags_indexes)
-        for i in range(0, options["n_tags"]):
+        for i in range(0, options["n_tags"][0]):
             #add random tags from file
             tag = Tag(name=tags[tags_indexes[i]])
             tag.save()
+            print("Saved tag " + tag.name)
 
-        for i in range(0, options["n_questions"]):
+        print("Adding " + str(options["n_questions"][0]) + " questions")
+        for i in range(0, options["n_questions"][0]):
             #generate some random questoins
             question_text = fake.text(max_nb_chars=400)
             question_snippet = question_text[:97] + "..."
@@ -52,8 +58,10 @@ class Command(BaseCommand):
                 question.tags.add(tag_objects[i])
 
             question.save()
+            print("Saved question with id " + str(question.id))
 
-        for i in range(0, options["n_answers"]):
+        print("Adding " + str(options["n_answers"][0]) + " answers")
+        for i in range(0, options["n_answers"][0]):
             #generate some random answers
             answer_text = fake.text(max_nb_chars = 250)
             answer_user = Profile.objects.all()[random.randrange(0, len(Profile.objects.all())-1)]
@@ -62,25 +70,27 @@ class Command(BaseCommand):
             answer = Answer(text=answer_text, user = answer_user,
                             question=ans_question, correct=answer_correct)
             answer.save()
+            print("Saved answer with id " + str(answer.id))
 
-        for i in range(0, options["n_qlikes"]):
-            print
+        print("Adding " + str(options["n_qlikes"][0]) + " qlikes")
+        for i in range(0, options["n_qlikes"][0]):
             qlike_question = Question.objects.all()[random.randrange(0, len(Question.objects.all())-1)]
             qlike_user = Profile.objects.all()[random.randrange(0, len(Profile.objects.all())-1)]
             while QuestionLike.objects.filter(questionLiked=qlike_question, user=qlike_user):
                 qlike_question = Question.objects.all()[random.randrange(0, len(Question.objects.all())-1)]
-                qlike_user = Profile.objects.all()[random.randrange(0, len(Profile.objects.all())-1)]
-            print("success N" + str(i+1))
             like_or_dis = not random.getrandbits(1)
             qlike = QuestionLike(questionLiked=qlike_question, user=qlike_user, like_or_dis=like_or_dis)
             qlike.save()
+            print("Saved like with userid=" + str(qlike.user.id) + ", questionLiked=" + str(qlike.questionLiked.id))
 
-        for i in range(0, options["n_alikes"]):
+        print("Adding " + str(options["n_alikes"][0]) + " alikes")
+        for i in range(0, options["n_alikes"][0]):
             alike_answer = Answer.objects.all()[random.randrange(0, len(Answer.objects.all())-1)]
             alike_user = Profile.objects.all()[random.randrange(0, len(Profile.objects.all())-1)]
             while AnswerLike.objects.filter(answerLiked=alike_answer, user=alike_user):
                 alike_answer = Answer.objects.all()[random.randrange(0, len(Answer.objects.all())-1)]
                 alike_user = Profile.objects.all()[random.randrange(0, len(Profile.objects.all())-1)]
             like_or_dis = not random.getrandbits(1)
-            qlike = AnswerLike(answerLiked=alike_answer, user=alike_user, like_or_dis=like_or_dis)
-            qlike.save()
+            alike = AnswerLike(answerLiked=alike_answer, user=alike_user, like_or_dis=like_or_dis)
+            alike.save()
+            print("Saved like with userid=" + str(alike.user.id) + ", questionLiked=" + str(alike.answerLiked.id))

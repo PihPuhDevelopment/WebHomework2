@@ -1,4 +1,3 @@
-{% include 'paginator.html' %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +11,7 @@
     <title>Starter Template for Bootstrap</title>
     {% load static %}
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'font-awesome-4.7.0/css/font-awesome.css' %}">
 
     <!-- Custom styles for this template -->
@@ -37,30 +36,39 @@
                         Search
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
-                </span>
+        </span>
         </div>
     </form>
 
-    {% block user %}
+    {% if userinfo %}
+        {% block user %}
 
-        <button class="btn btn-outline-success mr-auto" style="width: 100px;">
-            Ask
-        </button>
-        <div class="nav-account dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img class="img-fluid avatar" height="auto" width="50px" src="{% static 'img/peka.jpg' %}">
-                Hello, Mr. Butthurt
+            <a href="{% url 'ask' %}" class="btn btn-outline-success mr-auto" style="width: 100px;">
+                Ask
             </a>
+            <div class="nav-account dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img class="img-fluid avatar" height="auto" width="50px" src="{{ userinfo.avatar.url }}">
+                    Hello, {{ userinfo.username }}
+                </a>
 
-            <div class="dropdown-menu" style="width: 250px;">
-                <a href="#" class="dropdown-item">My account</a>
-                <a href="#" class="dropdown-item">Settings</a>
-                <a href="#" class="dropdown-item">Log out</a>
+                <div class="dropdown-menu" style="width: 250px;">
+                    <a href="#" class="dropdown-item">My account</a>
+                    <a href="#" class="dropdown-item">Settings</a>
+                    <a href="{% url 'logout' %}" class="dropdown-item">Log out</a>
+                </div>
             </div>
-        </div>
 
-    {% endblock %}
+        {% endblock %}
+    {% else %}
+        <a href="{% url 'signin' %}" class="nav-link">
+            Log in
+        </a>
 
+        <a href="{% url 'signup' %}" class="nav-link">
+            Register
+        </a>
+    {% endif %}
 </nav>
 <!-- NAV BAR END -->
 
@@ -72,19 +80,17 @@
 
         <!-- QUESTIONS -->
         <div class="col-md-8">
-
-
             {% block questions %}
-                {% block content %}
-                {% endblock %}
                 {% block pagination %}
                     {% include 'paginator.html' %}
                 {% endblock %}
 
-            {% endblock %}
+                {% block content %}
+                {% endblock %}
 
-            {% block pagination2 %}
-                {% include 'paginator.html' %}
+                {% block pagination2 %}
+                    {% include 'paginator.html' %}
+                {% endblock %}
             {% endblock %}
         </div>
 
@@ -128,12 +134,17 @@
 
 </footer>
 
+<script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/csrf.js' %}"></script>
+
+{% block js %}
+{% endblock %}
 
 <script>
     (function () {
-        'use strict'
+        'use strict';
 
         if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             var msViewportStyle = document.createElement('style')
@@ -141,7 +152,7 @@
                 document.createTextNode(
                     '@-ms-viewport{width:auto!important}'
                 )
-            )
+            );
             document.head.appendChild(msViewportStyle)
         }
 

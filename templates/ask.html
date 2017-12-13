@@ -6,8 +6,8 @@
     <h2>New question</h2>
     <p class="text-danger">Please, enter the title</p>
     <div class="question-single">
-        <form>
-            <div class="form-group">
+        <form method="post" enctype="multipart/form-data">
+            <!--<div class="form-group">
                 <label for="titleInput">Title</label>
                 <input type="text" class="form-control" if="titleInput" placeholder="Enter question title">
                 <small class="form-text text-muted">Clear and short statement of your problem</small>
@@ -21,9 +21,11 @@
 
             <div class="form-group">
                 <label for="titleInput">Tags</label>
-                <input type="text" class="form-control" if="titleInput" placeholder="Enter question title">
+                <input type="text" class="form-control" id="titleInput" placeholder="Enter question title">
                 <small class="form-text text-muted">List of tags, separated by commas</small>
-            </div>
+            </div>-->
+
+            {{ form.as_table }}
 
             <button type="submit" class="btn btn-success">
                 Ask

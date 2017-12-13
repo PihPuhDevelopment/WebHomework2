@@ -9,8 +9,7 @@ from model_managers import QuestionManager, AnswerManager
 
 
 class Profile(User):
-    login = models.CharField(max_length=30, verbose_name="login used to enter site")
-    avatar = models.ImageField(upload_to='images/', null=True, verbose_name="user photo")
+    avatar = models.ImageField(upload_to='avatar/%Y/%m/%d', default="uploads/avatar.jpg", null=True, verbose_name="user photo")
 
 
 class Tag(models.Model):
@@ -27,6 +26,9 @@ class Question(models.Model):
 
     objects = QuestionManager()
 
+    def __unicode__(self):
+        return self.title
+
 
 class Answer(models.Model):
     text = models.TextField(verbose_name="answer text")
@@ -37,6 +39,9 @@ class Answer(models.Model):
 
     objects = AnswerManager()
 
+    def __unicode__(self):
+        return str(self.text)[:20] + str(self.date)
+
     def save(self, force_insert=False, force_update=False, **kwargs):
         if self.correct:
             try:
@@ -44,7 +49,7 @@ class Answer(models.Model):
             except Answer.DoesNotExist:
                 super(Answer, self).save(force_insert, force_update)
             else:
-                other_answer.correct = False;
+                other_answer.correct = False
                 other_answer.save()
                 super(Answer, self).save(force_insert, force_update)
         else:

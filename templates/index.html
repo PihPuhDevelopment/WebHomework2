@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% debug %}
 
 {% block questions %}
     <h2>New questions</h2>
@@ -18,9 +17,9 @@
                             <img class="img-fluid avatar" src="{% static 'img/mama.jpg' %}" style="width: 100px; height: 100px;">
 
                             <div class="center-block thumbs" style="width: 70px;">
-                                <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
+                                <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="dec"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
                                 {{ q.rating }}
-                                <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                                <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="inc"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
                             </div>
                         </div>
 
@@ -50,4 +49,26 @@
         {% endfor %}
     </div>
         {% endblock %}
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        (function(){
+            $('.js-vote').on('click', function(){
+                var $this = $(this);
+                var qid = $this.data('qid');
+                var vote = $this.data('vote');
+                console.log('qid: ' + qid + " vote: " + vote);
+                $.post('/vote/', {
+                    qid:qid,
+                    vote: vote
+                }).done(function(data){
+                    console.log(data);
+                });
+                return false;
+            })
+        })();
+    </script>
 {% endblock %}

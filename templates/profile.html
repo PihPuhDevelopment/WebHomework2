@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="file" name="avatar" class="form-control-file"/>
+        </div>
+        <input value="Save" type="submit" class="btn btn-success"/>
+    </form>
+{% endblock %}

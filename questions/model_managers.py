@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class AnswerManager(models.Manager):
 
     def filter_with_rating(self, **kwargs):
