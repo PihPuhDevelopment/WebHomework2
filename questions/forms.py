@@ -41,6 +41,13 @@ class RegisterForm(forms.Form):
             if len(users_with_email) > 0:
                 raise forms.ValidationError("User with same email already registered")
 
+        # unique username validation
+        if 'username' in cleaned_data:
+            username = cleaned_data["username"]
+            users_with_username = Profile.objects.filter(username=username)
+            if len(users_with_username) > 0:
+                raise forms.ValidationError("User with same username already registered")
+
         # password confirmation validation
         if 'password' in cleaned_data:
             password = cleaned_data["password"]
@@ -55,6 +62,7 @@ class RegisterForm(forms.Form):
                               avatar=self.cleaned_data["avatar"])
         new_profile.set_password(self.cleaned_data["password"])
         new_profile.save()
+        return new_profile
 
 
 class LoginForm(forms.Form):
@@ -129,6 +137,7 @@ class AskForm(forms.Form):
             question.save()
             return question
 
+
 class AnswerForm(forms.Form):
 
     def __init__(self, post=None, user=None, question=None):
@@ -151,7 +160,49 @@ class AnswerForm(forms.Form):
         new_answer.save()
 
 
-#TUTORIAL FORMS
+class ProfileForm(forms.Form):
+
+    profile_edited = None
+
+
+    def __init__(self, post=None, files=None, profile_edited=None, initial=None):
+        super(ProfileForm, self).__init__(data=post, files=files, initial=initial)
+        self.profile_edited = profile_edited
+
+    username = forms.CharField(max_length=150, widget=forms.TextInput(
+        attrs={'class': 'form-control',
+               'placeholder': 'Name, displayed to other users'}
+    ), validators=[_alphanumeric_validator])
+    email = forms.EmailField(max_length=254, widget=forms.EmailInput(
+        attrs={'class': 'form-control',
+               'placeholder': 'your@email.com'}
+    ))
+
+    avatar = forms.ImageField(required=False,
+                              widget=forms.FileInput(
+                                  attrs={'class': 'form-control-file'}
+                                )
+                              )
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        users_with_username = Profile.objects.filter(username=username)
+        if len(users_with_username) > 0 and self.profile_edited.username != username:
+            self.add_error(None, "User with username " + username + " already exists")
+            self.cleaned_data["username"] = self.profile_edited.username
+            print(self.cleaned_data["username"])
+            return self.cleaned_data
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        users_with_email = Profile.objects.filter(email=email)
+        if len(users_with_email) > 0 and self.profile_edited.email != email:
+            # it means that there is some other user with selected email
+            self.add_error(None, "User with email " + email + " already exists")
+            return self.profile_edited.email
+
+
+# TUTORIAL FORMS
 class AuthorForm(forms.Form):
     name = forms.CharField(max_length=255)
     birthday = forms.DateField(
@@ -168,10 +219,3 @@ class AuthorForm(forms.Form):
 
     def save(self):
         pass
-
-class ProfileForm(forms.Form):
-    avatar = forms.ImageField(
-        widget=forms.FileInput(
-            attrs={'class': 'form-control-file'}
-        )
-    )

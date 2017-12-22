@@ -55,17 +55,17 @@
                 <div class="dropdown-menu" style="width: 250px;">
                     <a href="#" class="dropdown-item">My account</a>
                     <a href="#" class="dropdown-item">Settings</a>
-                    <a href="{% url 'logout' %}" class="dropdown-item">Log out</a>
+                    <a href="{% url 'logout' %}?continue={{ request.path }}" class="dropdown-item">Log out</a>
                 </div>
             </div>
 
         {% endblock %}
     {% else %}
-        <a href="{% url 'signin' %}" class="nav-link">
+        <a href="{% url 'signin' %}?continue={{ request.path }}" class="nav-link">
             Log in
         </a>
 
-        <a href="{% url 'signup' %}" class="nav-link">
+        <a href="{% url 'signup' %}?continue=/" class="nav-link">
             Register
         </a>
     {% endif %}

@@ -3,3 +3,7 @@ db.sqlite3
 manage.py
 questions/migrations/
 *.pyc
+*.sh
+static/js/jquery*
+static/js/popper*
+uploads/

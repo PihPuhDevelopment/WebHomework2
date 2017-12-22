@@ -53,8 +53,7 @@ def index(request):
 
     context = {'qs': qs_on_page,
                'pagenum': range(first_page, last_page),
-               'current': pagenum,
-               'userinfo': profile}
+               'current': pagenum}
 
     context = add_user(request, context)
 
@@ -109,22 +108,29 @@ def single_question(request, question_number):
 
 
 def signin(request):
+    # check if continue exists
+    continue_path = request.GET.get("continue", '/')
+    # if user is authenticated, then redirect him to info page
     if request.user.is_authenticated:
         context = {}
         context = add_user(request, context)
+        # add a continue path for the user to go back
+        context["continue"] = continue_path
         return render(request, 'already_signed_in.html', context)
+
+    # if a user just wants to login
     if request.method == 'GET':
         form = LoginForm()
-    else:
-        form = LoginForm(request.POST)
+    else: # else, if he sends some data in POST
+        form = LoginForm(request.POST) # initialize the form with POST data
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
-            user = authenticate(request=request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/')
-            else:
+            user = authenticate(request=request, username=username, password=password) # try auth
+            if user is not None: # if auth is success
+                login(request, user) # start session
+                return redirect(continue_path) #redirect to continue or to /
+            else: # else, auth gone wrong
                 form.add_error(None, "Username or password is incorrect")
 
     return render(request, 'login.html', {'form': form})
@@ -140,9 +146,17 @@ def signup(request):
     else:
         register_form = RegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
-            register_form.save()
+            new_profile = register_form.save()
+            login(request, new_profile)
             return redirect('index')
     return render(request, 'register.html', {'form': register_form})
+
+
+@login_required()
+def log_out(request):
+    continue_path = request.GET.get("continue", '/')
+    logout(request)
+    return redirect(continue_path)
 
 
 @login_required
@@ -187,25 +201,26 @@ def create_answer(request):
 
 
 @login_required()
-def log_out(request):
-    logout(request)
-    return redirect("/")
-
-
-@login_required()
 def profile(request):
     user = request.user
     _profile = Profile.objects.filter(user_ptr_id=user.id).last()
-    print(_profile)
-    if request.POST:
-        form = ProfileForm(request.POST, request.FILES)
-        print("is post")
-        if form.is_valid():
-            print("valid")
-            _profile.avatar = form.cleaned_data["avatar"]
-            _profile.save()
 
-    context = {}
+    if request.POST:
+        form = ProfileForm(request.POST, request.FILES, _profile)
+        if form.is_valid():
+            _profile.username = form.cleaned_data["username"]
+            _profile.email = form.cleaned_data["email"]
+            if form.cleaned_data["avatar"]:
+                _profile.avatar = form.cleaned_data["avatar"]
+            _profile.save()
+    else:
+        # build initial dict
+        init = {"username": _profile.username,
+                "email": _profile.email,
+                "avatar": _profile.avatar}
+        form = ProfileForm(initial=init)
+
+    context = {'form': form}
     context = add_user(request, context)
     return render(request, 'profile.html', context)
 

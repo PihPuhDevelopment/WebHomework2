@@ -1,11 +1,71 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.db import models
+
 from django.contrib.auth.models import User
-from questions.exceptions import CorrectAlreadyExists
-from model_managers import QuestionManager, AnswerManager
+from django.db import models
+
 
 # Create your models here.
+
+
+class AnswerManager(models.Manager):
+
+    def filter_with_rating(self, **kwargs):
+        answers = self.model.objects.filter(**kwargs)
+        for answer in answers:
+            self.__add_rating(answer)
+        return answers
+
+    def __add_rating(self, answer):
+        likes = AnswerLike.objects.filter(answerLiked=answer)
+        rating = 0
+        for like in likes:
+            if like.like_or_dis:
+                rating += 1
+            else:
+                rating -= 1
+        answer.rating = rating
+
+
+class QuestionManager(models.Manager):
+    def with_rating(self):
+        questions = list(self.model.objects.all().order_by("-date"))
+        for question in questions:
+            self.__add_rating(question)
+            self.__add_answer_count(question)
+        return questions
+
+    def get_with_rating(self, **kwargs):
+        question = self.model.objects.get(**kwargs)
+        self.__add_rating(question)
+        self.__add_answer_count(question)
+        return question
+
+    def filter_with_rating(self, **kwargs):
+        questions = list(self.model.objects.filter(**kwargs).order_by("-date"))
+        for question in questions:
+            self.__add_rating(question)
+            self.__add_answer_count(question)
+        return questions
+
+    def hot_questions(self):
+        questions = self.with_rating()
+        questions.sort(key=lambda question: question.rating, reverse=True)
+        return questions[:10]
+
+    def __add_rating(self, question):
+        likes = QuestionLike.objects.filter(questionLiked=question)
+        rating = 0
+        for like in likes:
+            if like.like_or_dis:
+                rating += 1
+            else:
+                rating -= 1
+        question.rating = rating
+
+    def __add_answer_count(self, question):
+        answer_count = len(Answer.objects.filter(question=question))
+        question.answer_count = answer_count
 
 
 class Profile(User):
@@ -72,6 +132,3 @@ class QuestionLike(models.Model):
 
     class Meta:
         unique_together = ("questionLiked", "user")
-
-
-

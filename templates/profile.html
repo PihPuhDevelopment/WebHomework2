@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-group">
-            <input type="file" name="avatar" class="form-control-file"/>
-        </div>
+        {{ form.as_p }}
+        <img class="img-thumbnail" src="{{ userinfo.avatar.url }}" style="width: 200px;">
+        <br>
         <input value="Save" type="submit" class="btn btn-success"/>
     </form>
 {% endblock %}

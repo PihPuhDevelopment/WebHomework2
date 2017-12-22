@@ -57,9 +57,12 @@ nav a:hover{
 .avatar {
     margin: 10px;
     border-radius: 50%;
-    border-width: 5px;
-    border-style: solid;
-    border-color: forestgreen;
+    border: 5px solid forestgreen;
+}
+
+.avatar-big{
+    width: 200px;
+    height: auto;
 }
 
 .thumbs {
