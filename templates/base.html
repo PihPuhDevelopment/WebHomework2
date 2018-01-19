@@ -23,7 +23,7 @@
 <body>
 <!-- NAV BAR -->
 <nav class="navbar navbar-inverse" style="background-color: #4b4a5b; color: white;">
-    <a class="navbar-brand">
+    <a href="/" class="navbar-brand">
         SEGMENTATION SUCCESS
     </a>
 
@@ -53,8 +53,7 @@
                 </a>
 
                 <div class="dropdown-menu" style="width: 250px;">
-                    <a href="#" class="dropdown-item">My account</a>
-                    <a href="#" class="dropdown-item">Settings</a>
+                    <a href="{% url 'profile' %}" class="dropdown-item">My account</a>
                     <a href="{% url 'logout' %}?continue={{ request.path }}" class="dropdown-item">Log out</a>
                 </div>
             </div>

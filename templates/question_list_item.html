@@ -1,0 +1,42 @@
+{% load static %}
+
+<div class="question container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
+                <a href="#">{{ q.user.username }}</a>
+                <a href="#">
+                    <img class="img-fluid avatar" src="{{ q.user.avatar.url }}" style="width: 100px; height: 100px;">
+                </a>
+                <div class="center-block thumbs" style="width: 70px;">
+                    <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="dec"><i class="fa fa-thumbs-down"
+                                                                                         aria-hidden="true"></i></a>
+                    <span id="rating{{ q.id }}">{{ q.rating }}</span>
+                    <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="inc"><i class="fa fa-thumbs-up"
+                                                                                         aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <a href="{% url 'question' q.id %}">
+                    <h3>{{ q.title }}</h3>
+                </a>
+                <p>{{ q.snippet }}</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="{% url 'question' q.id %}">Answer({{ q.answer_count }})</a>
+                        </div>
+
+                        <div class="col-md-6">
+                            Tags:
+                            {% for tag in q.tags.all %}
+                                <a href="{% url 'tag' tag.name %}">{{ tag.name }} </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

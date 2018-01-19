@@ -9,43 +9,7 @@
     <div class="center-align">
 
         {% for q in qs %}
-            <div class="question">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
-                            <a href="#">{{ q.user.username }}</a>
-                            <img class="img-fluid avatar" src="{% static 'img/mama.jpg' %}" style="width: 100px; height: 100px;">
-
-                            <div class="center-block thumbs" style="width: 70px;">
-                                <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="dec"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                {{ q.rating }}
-                                <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="inc"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                            </div>
-                        </div>
-
-                        <div class="col-md-9 col-sm-9 col-xs-9">
-                            <a href="{% url 'question' q.id %}">
-                                <h3>{{ q.title }}</h3>
-                            </a>
-                            <p>{{ q.snippet }}</p>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a href="#">Answer({{ q.answer_count }})</a>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        Tags:
-                                        {% for tag in q.tags.all %}
-                                            <a href="{% url 'tag' tag.name %}">{{ tag.name }} </a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include 'question_list_item.html' %}
         {% endfor %}
     </div>
         {% endblock %}
@@ -56,18 +20,27 @@
 {% block js %}
     <script>
         (function(){
-            $('.js-vote').on('click', function(){
+            $('.js-vote').on('click', function(event){
+                event.preventDefault();
                 var $this = $(this);
                 var qid = $this.data('qid');
                 var vote = $this.data('vote');
                 console.log('qid: ' + qid + " vote: " + vote);
-                $.post('/vote/', {
-                    qid:qid,
-                    vote: vote
-                }).done(function(data){
-                    console.log(data);
-                });
-                return false;
+
+                $.ajax({
+                    url: '/vote/',
+                    method: 'POST',
+                    data: {
+                      'qid': qid,
+                      'vote': vote
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if(data['ok'] == 1){
+                            $('#rating'+qid).text(data['rating']);
+                        }
+                    }
+                })
             })
         })();
     </script>

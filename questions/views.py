@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# django imports
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http.response import Http404, JsonResponse
-# django imports
 from django.shortcuts import render, redirect
 
-from models import Profile, Question, Answer
 # my imports
 from questions.forms import RegisterForm, LoginForm, AuthorForm, AnswerForm, ProfileForm, AskForm
+from models import Profile, Question, Answer, QuestionLike, AnswerLike
 
 ITEMS_PER_PAGE = 7
 PAGES_PER_PAGE = 10
@@ -18,6 +18,7 @@ PAGES_PER_PAGE = 10
 
 def add_user(request, context):
     _profile = Profile.objects.filter(user_ptr_id=request.user.id).last()
+    print(_profile)
     context['userinfo'] = _profile
     return context
 
@@ -38,7 +39,7 @@ def index(request):
 
     qs_on_page, pages, pagenum = paginate(all_questions, request)
 
-    first_page = pagenum - PAGES_PER_PAGE / 2
+    """first_page = pagenum - PAGES_PER_PAGE / 2
     if first_page <= 0:
         first_page = 1
     else:
@@ -49,13 +50,14 @@ def index(request):
         last_page = pages.num_pages
 
     print(first_page)
-    print(last_page)
+    print(last_page)"""
 
     context = {'qs': qs_on_page,
-               'pagenum': range(first_page, last_page),
+               'pagenum': range(1, pages.num_pages),
                'current': pagenum}
 
     context = add_user(request, context)
+    print(context['userinfo'])
 
     return render(request, 'index.html', context)
 
@@ -104,7 +106,7 @@ def single_question(request, question_number):
 
     context['form'] = form
 
-    return render(request, 'question.html', context)
+    return render(request, 'single_question.html', context)
 
 
 def signin(request):
@@ -205,6 +207,12 @@ def profile(request):
     user = request.user
     _profile = Profile.objects.filter(user_ptr_id=user.id).last()
 
+    # build initial dict
+    def initial(profile):
+        return {"username": profile.username, "email": profile.email, "avatar": profile.avatar}
+
+    errors = []
+
     if request.POST:
         form = ProfileForm(request.POST, request.FILES, _profile)
         if form.is_valid():
@@ -213,12 +221,15 @@ def profile(request):
             if form.cleaned_data["avatar"]:
                 _profile.avatar = form.cleaned_data["avatar"]
             _profile.save()
-    else:
-        # build initial dict
-        init = {"username": _profile.username,
-                "email": _profile.email,
-                "avatar": _profile.avatar}
-        form = ProfileForm(initial=init)
+        else:
+            for err in form.non_field_errors():
+                errors.append(err)
+
+    form = ProfileForm(initial=initial(_profile))
+    form.clean()
+    if errors:
+        for err in errors:
+            form.add_error(None, err)
 
     context = {'form': form}
     context = add_user(request, context)
@@ -227,15 +238,42 @@ def profile(request):
 
 @login_required()
 def vote(request):
-    try:
-        qid = int(request.POST.get('qid'))
-    except:
+    qid = request.POST.get('qid')
+    if qid is None:
         return JsonResponse(dict(error='bad question id'))
+
     _vote = request.POST.get('vote')
     question = Question.objects.get_with_rating(id=qid)
     rating = question.rating
-    if _vote == "inc":
-        rating += 1
-    else:
-        rating -= 1
+    try:
+        like = QuestionLike.objects.get(questionLiked=question, user=request.user)
+        #если поставили лайк, но стоял дизлайк
+        if _vote == 'inc' and not like.like_or_dis:
+            rating += 2
+            like.like_or_dis = True
+            like.save()
+        #если поставили дизлайк, но стоит лайк
+        elif _vote == 'dec' and like.like_or_dis:
+            rating -= 2
+            like.like_or_dis = False
+            like.save()
+        #если поставили то же самое, значит отмена
+        else:
+            if _vote == 'dec':
+                rating += 1
+            else:
+                rating -= 1
+            like.delete()
+    #если ничего не стояло
+    except QuestionLike.DoesNotExist:
+        if _vote == 'inc':
+            rating += 1
+            is_like = True
+        else:
+            rating -= 1
+            is_like = False
+        new_like = QuestionLike(user=request.user, questionLiked=question, like_or_dis=is_like)
+        new_like.save()
+
+
     return JsonResponse(dict(ok=1, vote=_vote, rating=rating))

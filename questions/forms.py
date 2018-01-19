@@ -8,6 +8,8 @@ _alphanumeric_validator = RegexValidator(r'^[0-9a-zA-Z_]*$',
                                          "Only alphabetic symbols, numbers and underscores allowed")
 
 # ENABLED FORMS
+
+
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=150, widget=forms.TextInput(
         attrs={'class': 'form-control',
@@ -52,7 +54,7 @@ class RegisterForm(forms.Form):
         if 'password' in cleaned_data:
             password = cleaned_data["password"]
             confirm_password = cleaned_data["confirm_password"]
-            if not password == confirm_password:
+            if password != confirm_password:
                 raise forms.ValidationError("Passwords do not match")
             return cleaned_data
 
@@ -108,9 +110,8 @@ class AskForm(forms.Form):
         cleaned_data["tags"] = []
 
         for tag in tag_list:
-            print(tag)
+            tag = tag.strip()
             if tag != u'':
-                tag.strip()
                 cleaned_data["tags"].append(tag)
 
         if not cleaned_data["tags"]:
@@ -164,10 +165,10 @@ class ProfileForm(forms.Form):
 
     profile_edited = None
 
-
     def __init__(self, post=None, files=None, profile_edited=None, initial=None):
         super(ProfileForm, self).__init__(data=post, files=files, initial=initial)
         self.profile_edited = profile_edited
+
 
     username = forms.CharField(max_length=150, widget=forms.TextInput(
         attrs={'class': 'form-control',
@@ -189,9 +190,8 @@ class ProfileForm(forms.Form):
         users_with_username = Profile.objects.filter(username=username)
         if len(users_with_username) > 0 and self.profile_edited.username != username:
             self.add_error(None, "User with username " + username + " already exists")
-            self.cleaned_data["username"] = self.profile_edited.username
-            print(self.cleaned_data["username"])
-            return self.cleaned_data
+            return self.profile_edited.username
+        return username
 
     def clean_email(self):
         email = self.cleaned_data["email"]
@@ -200,6 +200,7 @@ class ProfileForm(forms.Form):
             # it means that there is some other user with selected email
             self.add_error(None, "User with email " + email + " already exists")
             return self.profile_edited.email
+        return email
 
 
 # TUTORIAL FORMS

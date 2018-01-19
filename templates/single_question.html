@@ -11,7 +11,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
 
                     <a href="#">{{ question.user.username }}</a>
-                    <img class="img-fluid avatar" height="auto" src="{% static 'img/peka.jpg' %}"
+                    <img class="img-fluid avatar" height="auto" src="{{ question.user.avatar.url }}"
                          style="width: 70px; height: 70px;">
 
                     <div class="center-block thumbs" style="width: 70px;">
@@ -45,41 +45,7 @@
     <br>
 
     {% for ans in answers %}
-
-        <div class="question">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
-
-                        <a href="#">{{ ans.user.username }}</a>
-                        <img class="img-fluid avatar" height="auto" src="{% static 'img/pineapple.jpg' %}"
-                             style="width: 70px; height: 70px;">
-
-                        <div class="center-block thumbs" style="width: 70px;">
-                            <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                {{ ans.rating }}
-                            <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-9 col-sm-9 col-xs-9">
-                        <p>{{ ans.text }}</p>
-                        <div class="checkbox checkbox-primary flex-hor-center">
-                            <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" disabled
-                                        {% if ans.correct %}
-                                            checked
-                                        {% endif %}>
-                                <span class="custom-control-indicator"></span>
-
-                            </label>
-                            Correct
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        {% include 'answer_list_item.html' %}
     {% endfor %}
 
 

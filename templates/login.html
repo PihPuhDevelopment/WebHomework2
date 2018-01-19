@@ -5,9 +5,9 @@
 {% block questions %}
     <h2>Log In</h2>
     <div class="question-single">
-        <p class="text-danger">
+        <!--<p class="text-danger">
             Wrong login or password. Try again.
-        </p>
+        </p>-->
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_table }}

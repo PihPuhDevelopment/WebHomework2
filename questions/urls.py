@@ -1,3 +1,4 @@
+
 from django.conf.urls import url, include
 import views
 
@@ -11,7 +12,7 @@ urlpatterns = [
     url(r'^ask/$', views.ask, name='ask'),
     url(r'^create-author/$', views.create_author, name="create-author"),
     url(r'^create-answer/$', views.create_answer, name="create-answer"),
-    url(r'^profile/', views.profile),
+    url(r'^profile/', views.profile, name='profile'),
     url(r'^vote/$', views.vote),
     url(r'^logout/$', views.log_out, name="logout")
 ]

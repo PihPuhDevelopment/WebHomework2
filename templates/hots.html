@@ -1,50 +1,17 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block questions %}
+
     <h2>Hot questions</h2>
-{% block content %}
-    <div class="center-align">
 
-        {% for q in qs %}
-            <div class="question">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3 col-sm-3 col-xs-3 right-thin-border center-align">
-                            <a href="#">{{ q.user.username }}</a>
-                            <img class="img-fluid avatar" src="{% static 'img/mama.jpg' %}" style="width: 100px; height: 100px;">
+    {% block content %}
 
-                            <div class="center-block thumbs" style="width: 70px;">
-                                <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                                    {{ q.rating }}
-                                <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-                            </div>
-                        </div>
+        <div class="center-align">
+            {% for q in qs %}
+                {% include 'question_list_item.html' %}
+            {% endfor %}
+        </div>
 
-                        <div class="col-md-9 col-sm-9 col-xs-9">
-                            <a href="/question/{{ q.id }}">
-                                <h3>{{ q.title }}</h3>
-                            </a>
-                            <p>{{ q.snippet }}</p>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <a href="#">Answer({{ q.answer_count }})</a>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        Tags:
-                                        {% for tag in q.tags.all %}
-                                            <a href="{% url 'tag' tag.name %}">{{ tag.name }} </a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
     {% endblock %}
+
 {% endblock %}
