@@ -18,7 +18,6 @@ PAGES_PER_PAGE = 10
 
 def add_user(request, context):
     _profile = Profile.objects.filter(user_ptr_id=request.user.id).last()
-    print(_profile)
     context['userinfo'] = _profile
     return context
 
@@ -275,5 +274,46 @@ def vote(request):
         new_like = QuestionLike(user=request.user, questionLiked=question, like_or_dis=is_like)
         new_like.save()
 
+    return JsonResponse(dict(ok=1, vote=_vote, rating=rating))
+
+
+@login_required()
+def vote_answer(request):
+    ansid = request.POST.get('ansid')
+    if ansid is None:
+        return JsonResponse(dict(error='bad answer id'))
+
+    _vote = request.POST.get('vote')
+    answer = Answer.objects.get_with_rating(id=ansid)
+    rating = answer.rating
+    try:
+        like = AnswerLike.objects.get(answerLiked=answer, user=request.user)
+        #если поставили лайк, но стоял дизлайк
+        if _vote == 'inc' and not like.like_or_dis:
+            rating += 2
+            like.like_or_dis = True
+            like.save()
+        #если поставили дизлайк, но стоит лайк
+        elif _vote == 'dec' and like.like_or_dis:
+            rating -= 2
+            like.like_or_dis = False
+            like.save()
+        #если поставили то же самое, значит отмена
+        else:
+            if _vote == 'dec':
+                rating += 1
+            else:
+                rating -= 1
+            like.delete()
+    #если ничего не стояло
+    except AnswerLike.DoesNotExist:
+        if _vote == 'inc':
+            rating += 1
+            is_like = True
+        else:
+            rating -= 1
+            is_like = False
+        new_like = AnswerLike(user=request.user, answerLiked=answer, like_or_dis=is_like)
+        new_like.save()
 
     return JsonResponse(dict(ok=1, vote=_vote, rating=rating))

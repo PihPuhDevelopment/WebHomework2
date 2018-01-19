@@ -10,9 +10,13 @@
                      style="width: 70px; height: 70px;">
 
                 <div class="center-block thumbs" style="width: 70px;">
-                    <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                    {{ ans.rating }}
-                    <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                    <a class="ans-vote" href="#" data-ansid="{{ ans.id }}" data-vote="dec">
+                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    </a>
+                    <span id="ansrating{{ ans.id }}">{{ ans.rating }}</span>
+                    <a class="ans-vote" href="#" data-ansid="{{ ans.id }}" data-vote="inc">
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
 

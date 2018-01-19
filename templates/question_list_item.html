@@ -9,11 +9,13 @@
                     <img class="img-fluid avatar" src="{{ q.user.avatar.url }}" style="width: 100px; height: 100px;">
                 </a>
                 <div class="center-block thumbs" style="width: 70px;">
-                    <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="dec"><i class="fa fa-thumbs-down"
-                                                                                         aria-hidden="true"></i></a>
+                    <a class="q-vote" href="#" data-qid="{{ q.id }}" data-vote="dec">
+                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    </a>
                     <span id="rating{{ q.id }}">{{ q.rating }}</span>
-                    <a class="js-vote" href="#" data-qid="{{ q.id }}" data-vote="inc"><i class="fa fa-thumbs-up"
-                                                                                         aria-hidden="true"></i></a>
+                    <a class="q-vote" href="#" data-qid="{{ q.id }}" data-vote="inc">
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
 

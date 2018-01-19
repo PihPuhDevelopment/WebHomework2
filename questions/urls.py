@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^create-answer/$', views.create_answer, name="create-answer"),
     url(r'^profile/', views.profile, name='profile'),
     url(r'^vote/$', views.vote),
+    url(r'^vote-answer/', views.vote_answer),
     url(r'^logout/$', views.log_out, name="logout")
 ]

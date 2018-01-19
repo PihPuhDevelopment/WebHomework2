@@ -15,9 +15,11 @@
                          style="width: 70px; height: 70px;">
 
                     <div class="center-block thumbs" style="width: 70px;">
-                        <a href="#"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
-                        {{ question.rating }}
-                        <a href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+                        <a class="q-vote" href="#" data-qid="{{ question.id }}" data-vote="dec"><i class="fa fa-thumbs-down"
+                                                                                             aria-hidden="true"></i></a>
+                        <span id="rating{{ question.id }}">{{ question.rating }}</span>
+                        <a class="q-vote" href="#" data-qid="{{ question.id }}" data-vote="inc"><i class="fa fa-thumbs-up"
+                                                                                             aria-hidden="true"></i></a>
                     </div>
                 </div>
 
@@ -48,19 +50,22 @@
         {% include 'answer_list_item.html' %}
     {% endfor %}
 
+    <form method="POST" enctype="multipart/form-data">
+        <!--<div class="form-group">
+            <label for="questionInput">Enter your answer here</label>
+            <textarea class="form-control" id="questionInput" rows="7" placeholder="Enter your question"></textarea>
+            <p class="text-danger">Answer is empty</p>
+        </div>-->
 
-<form method="POST" enctype="multipart/form-data">
-    <!--<div class="form-group">
-        <label for="questionInput">Enter your answer here</label>
-        <textarea class="form-control" id="questionInput" rows="7" placeholder="Enter your question"></textarea>
-        <p class="text-danger">Answer is empty</p>
-    </div>-->
+        {% csrf_token %}
+        {{ form.as_p }}
 
-    {% csrf_token %}
-    {{ form.as_p }}
+        <button type="submit" class="btn btn-success">
+            Answer
+        </button>
+    </form>
+{% endblock %}
 
-    <button type="submit" class="btn btn-success">
-        Answer
-    </button>
-</form>
+{% block js %}
+    <script type="text/javascript" src="{% static 'js/answer-like.js' %}"></script>
 {% endblock %}

@@ -16,6 +16,11 @@ class AnswerManager(models.Manager):
             self.__add_rating(answer)
         return answers
 
+    def get_with_rating(self, **kwargs):
+        answer = self.model.objects.get(**kwargs)
+        self.__add_rating(answer)
+        return answer
+
     def __add_rating(self, answer):
         likes = AnswerLike.objects.filter(answerLiked=answer)
         rating = 0
